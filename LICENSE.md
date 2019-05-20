@@ -1,5 +1,9 @@
-
-Copyright (c) 2019, joe witcpalek
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -12,7 +16,7 @@ modification, are permitted provided that the following conditions are met:
   this list of conditions and the following disclaimer in the documentation
   and/or other materials provided with the distribution.
 
-* Neither the name of [project] nor the names of its
+* Neither Team 302 nor the names of its
   contributors may be used to endorse or promote products derived from
   this software without specific prior written permission.
 

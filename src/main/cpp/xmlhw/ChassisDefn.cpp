@@ -1,12 +1,27 @@
-// --------------------------------------------------------------------------------------------
-// ChassisDefn.cpp
-// --------------------------------------------------------------------------------------------
+
+///====================================================================================================================================================
+/// Copyright 2019 Lake Orion Robobitcs FIRST Team 302
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+/// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+///
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+/// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+/// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+/// OR OTHER DEALINGS IN THE SOFTWARE.
+///====================================================================================================================================================
+
+///========================================================================================================
+// ChassisDefn. 
+///========================================================================================================
 //
 // Description: Create a chassis from an XML definition
 //
 // <!ELEMENT chassis (motor*) >
 // <!ATTLIST chassis
-//           type              ( 0 | 1 | 2  ) "0"
 //           wheelDiameter     CDATA #REQUIRED
 //           wheelBase         CDATA #REQUIRED
 //           track             CDATA #REQUIRED
@@ -18,7 +33,7 @@
 //
 // Track is the distance between wheels on an "axle"
 //
-// --------------------------------------------------------------------------------------------
+///========================================================================================================
 
 // C++ includes
 #include <iostream>
@@ -40,18 +55,18 @@
 using namespace frc;
 
 
-//--------------------------------------------------------------------------------------------
-// Method:      ParseXML
-// Description: Parse a Chassis XML element and create an IChassis from its definition.
-// Returns:     IChassis*        	chassis (or nullptr if XML is ill-formed)
-//--------------------------------------------------------------------------------------------
-//DragonChassis* ChassisDefn::ParseXML
+
+///================================================================================================
+/// Method:      ParseXML
+/// Description: Parse the chassie element (and it children) from the chassis.  When this is done
+//				 a dragon chassis exists that can be retrieved from the factory.
+/// Returns:     void
+///================================================================================================
 void ChassisDefn::ParseXML
 (
 	pugi::xml_node      chassisNode
 )
 {
-    printf("top of ChassisDefn ParseXML\n");
     float wheelDiameter	= 0.0;
     float wheelBase 	= 0.0;
     float track 		= 0.0;
@@ -76,7 +91,7 @@ void ChassisDefn::ParseXML
         }
         else
         {
-        	printf( "==>> chassis: invalid attribute %s \n", attr.name() );
+            std::cout << "==>> ChassisDefn:  Invalid attribute "  << attr.name() << "\n";
             hasError = true;
         }
     }
@@ -84,13 +99,12 @@ void ChassisDefn::ParseXML
     //--------------------------------------------------------------------------------------------
     // Process child element nodes
     //--------------------------------------------------------------------------------------------
-    IDragonMotorControllerVector motors;
     std::vector<PIDData*> pidControlVector;
     for (pugi::xml_node child = chassisNode.first_child(); child; child = child.next_sibling())
     {
     	if ( strcmp( child.name(), "motor") == 0 )
     	{
-    		motors.emplace_back( MotorDefn::ParseXML( child ) );
+    		MotorDefn::ParseXML( child );
     	}
         else if ( strcmp( child.name(), "PID") == 0 )
         {
@@ -98,7 +112,7 @@ void ChassisDefn::ParseXML
         }
     	else
     	{
-    		printf( "==>> chassis unknown child %s \n", child.name() );
+            std::cout << "==>> ChassisDefn:  unknown child "  << child.name() << "\n";
     	}
     }
 
@@ -108,13 +122,7 @@ void ChassisDefn::ParseXML
     //--------------------------------------------------------------------------------------------
     if ( !hasError )
     {
-        // chassis = new DragonChassis( motors, wheelDiameter, wheelBase, track );
-//        DragonChassis::CreateDragonChassis( motors, wheelDiameter, wheelBase, track );
-//        for (PIDData* pidData : pidControlVector)
-//        {
-//            DragonChassis::GetInstance()->SetPID(pidData);
-//        }
+        /// TODO:: Call the factory
     }
-//    return DragonChassis::GetInstance(); //DUMMY
 }
 

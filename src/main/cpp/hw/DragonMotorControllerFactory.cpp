@@ -2,7 +2,9 @@
  * DragonMotorControllerFactory.cpp
  *
  */
+#include <iostream>
 
+#include <subsys/IMechanism.h>
 #include <hw/DragonMotorControllerFactory.h>        
 #include <xmlhw/MotorDefn.h>
 #include <hw/DragonTalon.h>
@@ -27,9 +29,17 @@ DragonMotorControllerFactory* DragonMotorControllerFactory::GetInstance()
 
 DragonMotorControllerFactory::DragonMotorControllerFactory() 
 {
+	int size = IDragonMotorController::MOTOR_CONTROLLER_TYPE::MAX_MOTOR_CONTROLLER_TYPES;
+	m_usageControllers.resize( size );
+	m_mechanism.resize( size );
+	for ( auto inx=0; inx<size; ++inx )
+	{
+		m_usageControllers[inx] = nullptr;
+		m_mechanism[inx] = IMechanism::MECHANISM_TYPE::UNKNOWN_MECHANISM;
+	}
 	for ( auto inx=0; inx<63; ++inx )
 	{
-		m_controllers[inx] = nullptr;
+		m_canControllers[inx] = nullptr;
 	}
 }
 
@@ -40,10 +50,11 @@ DragonMotorControllerFactory::DragonMotorControllerFactory()
 //=======================================================================================
 IDragonMotorController* DragonMotorControllerFactory::CreateMotorController
 (
+	IMechanism::MECHANISM_TYPE						mechtype, 
 	DragonMotorControllerFactory::MOTOR_TYPE		mtype,
     int 											canID,
 	int 											pdpID,
-    IDragonMotorController::TALON_TYPE     			usage,
+    IDragonMotorController::MOTOR_CONTROLLER_TYPE   usage,
     bool 											inverted, 
     bool 											sensorInverted,
     ctre::phoenix::motorcontrol::FeedbackDevice  	feedbackDevice,
@@ -51,7 +62,6 @@ IDragonMotorController* DragonMotorControllerFactory::CreateMotorController
     float 											gearRatio,
     bool 											brakeMode,
     int 											slaveTo,
-    int 											currentLimit,
     int 											peakCurrentDuration,
     int 											continuousCurrentLimit,
     int 											peakCurrentLimit,
@@ -149,7 +159,9 @@ IDragonMotorController* DragonMotorControllerFactory::CreateMotorController
 		default:
 			break;
 	}
-	m_controllers[ canID ] = controller;
+	m_canControllers[ canID ] = controller;
+	m_usageControllers[ usage ] = controller;
+	m_mechanism[ usage ] = mechtype;
 	printf("In DragonMotorControllerFactory end of constructor\n");
 	return controller;
 }
@@ -164,13 +176,47 @@ IDragonMotorController* DragonMotorControllerFactory::CreateMotorController
 //=======================================================================================
 IDragonMotorController* DragonMotorControllerFactory::GetController
 (
-	int			canID
+	int							canID		/// Motor controller CAN ID
 )
 {
 	IDragonMotorController* controller = nullptr;
 	if ( canID > -1 && canID < 63 )
 	{
-		controller = m_controllers[ canID ];
+		controller = m_canControllers[ canID ];
 	}
+	else
+	{
+		std::cout << "==>> DragonMotorControllerFactory::GetController invalid CAN ID " << canID << "\n";
+	}
+	return controller;
+}
+
+//=======================================================================================
+// Method:          GetController
+// Description:     return motor controller
+// Returns:         IDragonMotorController* 	may be nullptr if there isn't a controller
+//												with this CAN ID.
+//=======================================================================================
+IDragonMotorController* DragonMotorControllerFactory::GetController
+(
+	IMechanism::MECHANISM_TYPE							subsys,		/// system using the motor
+	IDragonMotorController::MOTOR_CONTROLLER_TYPE     	usage		/// Motor usage (e.g. Front Left Drive Motor)
+)
+{
+	IDragonMotorController* controller = nullptr;
+	int slot = usage;
+	if ( slot < m_usageControllers.size() )
+	{
+		controller = m_usageControllers[ slot ];
+		if ( subsys != m_mechanism[ slot ] )
+		{
+			std::cout << "==>>DragonMotorControllerFactory::GetController mismatched mechanism " << subsys << "\n";
+		}
+	}
+	else
+	{
+		std::cout << "==>>DragonMotorControllerFactory::GetController invalid usage requested " << usage << "\n";
+	}
+
 	return controller;
 }

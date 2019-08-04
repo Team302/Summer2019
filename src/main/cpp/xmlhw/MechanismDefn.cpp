@@ -29,8 +29,6 @@
 ///
 ///========================================================================================================
 
-
-
 // C++ Includes
 #include <iostream>
 #include <utility>
@@ -65,33 +63,33 @@
 using namespace frc;
 
 
-//-----------------------------------------------------------------------
-// Method:      ParseXML
-// Description: Parse a Mechanism XML element and create an IMechanism
-//              from its definition.
-//
-//
-//<!-- ====================================================
-//        enum MECHANISM_TYPE
-//        {
-//            UNKNOWN_MECHANISM = -1,
-//            WRIST,
-//            INTAKE,
-//            ARM,
-//            CLIMBER,
-//            MAX_MECHANISM_TYPES
-//        };
-//
-//
-//    ==================================================== -->
-//<!ELEMENT mechanism (motor*, analogInput*, digitalInput*, servo* )>
-//<!ATTLIST mechanism
-//          type              ( 0 | 1 | 2 | 3 ) "0"
-//>
-//
-//
-// Returns:     void
-//-----------------------------------------------------------------------
+///-----------------------------------------------------------------------
+/// Method:      ParseXML
+/// Description: Parse a Mechanism XML element and create an IMechanism
+///              from its definition.
+///
+///
+///<!-- ====================================================
+///        enum MECHANISM_TYPE
+///        {
+///            UNKNOWN_MECHANISM = -1,
+///            WRIST,
+///            INTAKE,
+///            ARM,
+///            CLIMBER,
+///            MAX_MECHANISM_TYPES
+///        };
+///
+///
+///    ==================================================== -->
+///<!ELEMENT mechanism (motor*, analogInput*, digitalInput*, servo* )>
+///<!ATTLIST mechanism
+///          type              ( 0 | 1 | 2 | 3 ) "0"
+///>
+///
+///
+/// Returns:     void
+///-----------------------------------------------------------------------
 void MechanismDefn::ParseXML
 (
     pugi::xml_node      mechanismNode

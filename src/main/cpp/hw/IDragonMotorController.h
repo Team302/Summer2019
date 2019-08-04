@@ -18,9 +18,9 @@ public:
         RPS
     };
 
-    enum TALON_TYPE
+    enum MOTOR_CONTROLLER_TYPE
     {
-        UNKNOWN_TALON_TYPE = -1,
+        UNKNOWN_MOTOR_CONTROLLER_TYPE = -1,
         FRONT_LEFT_DRIVE,
         MIDDLE_LEFT_DRIVE,
         BACK_LEFT_DRIVE,
@@ -35,13 +35,13 @@ public:
         ELEVATOR_WINCH,
         ELEVATOR_DRIVE,
         HATCH_MECH_MOTOR,
-        MAX_TALON_TYPES
+        MAX_MOTOR_CONTROLLER_TYPES
     };
 
     // Getters
     virtual double GetRotations() const = 0;
     virtual double GetRPS() const = 0;
-    virtual TALON_TYPE GetType() const = 0;
+    virtual MOTOR_CONTROLLER_TYPE GetType() const = 0;
     double GetCurrent();
     virtual int GetID() const = 0;
 

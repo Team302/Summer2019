@@ -1,70 +1,131 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
 
-#include "Robot.h"
+///====================================================================================================================================================
+/// Copyright 2019 Lake Orion Robobitcs FIRST Team 302
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+/// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+///
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+/// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+/// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+/// OR OTHER DEALINGS IN THE SOFTWARE.
+///====================================================================================================================================================
 
+///========================================================================================================
+/// Robot.cpp
+///========================================================================================================
+///
+/// File Description:
+///     The main robot code.  The Init methods get called when that state gets entered and then the 
+///     Periodic methods get called every 20 milliseconds.
+///
+///========================================================================================================
+
+// C++ Includes
 #include <iostream>
 
+// FRC includes
 #include <frc/smartdashboard/SmartDashboard.h>
 
-void Robot::RobotInit() {
-  m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
-  m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
-  frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+// Team 302 Includes
+#include <Robot.h>
+#include <xmlhw/RobotDefn.h>
+
+///-----------------------------------------------------------------------
+/// Method:      RobotInit
+/// Description: When the robot gets created this gets called.  It initializes
+///              the robot subsystems (hardware).
+///-----------------------------------------------------------------------
+void Robot::RobotInit() 
+{
+    // Read the robot definition from the xml configuration files and
+    // create the hardware (chassis + mechanisms along with their talons,
+    // solenoids, digital inputs, analog inputs, etc.
+    RobotDefn::ParseXML();
 }
 
-/**
- * This function is called every robot packet, no matter the mode. Use
- * this for items like diagnostics that you want ran during disabled,
- * autonomous, teleoperated and test.
- *
- * <p> This runs after the mode specific periodic functions, but before
- * LiveWindow and SmartDashboard integrated updating.
- */
-void Robot::RobotPeriodic() {}
+///-----------------------------------------------------------------------
+/// Method:      RobotPeriodic
+/// Description: This function is called every robot packet, no matter the 
+///              mode. This is used for items like diagnostics that run 
+///              during disabled, autonomous, teleoperated and test modes
+///              (states).  THis runs after the specific state periodic 
+///              methods and before the LiveWindow and SmartDashboard updating.
+///-----------------------------------------------------------------------
+void Robot::RobotPeriodic() 
+{
 
-/**
- * This autonomous (along with the chooser code above) shows how to select
- * between different autonomous modes using the dashboard. The sendable chooser
- * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
- * remove all of the chooser code and uncomment the GetString line to get the
- * auto name from the text box below the Gyro.
- *
- * You can add additional auto modes by adding additional comparisons to the
- * if-else structure below with additional strings. If using the SendableChooser
- * make sure to add them to the chooser code above as well.
- */
-void Robot::AutonomousInit() {
-  m_autoSelected = m_chooser.GetSelected();
-  // m_autoSelected = SmartDashboard::GetString("Auto Selector",
-  //     kAutoNameDefault);
-  std::cout << "Auto selected: " << m_autoSelected << std::endl;
-
-  if (m_autoSelected == kAutoNameCustom) {
-    // Custom Auto goes here
-  } else {
-    // Default Auto goes here
-  }
 }
 
-void Robot::AutonomousPeriodic() {
-  if (m_autoSelected == kAutoNameCustom) {
-    // Custom Auto goes here
-  } else {
-    // Default Auto goes here
-  }
+
+///-----------------------------------------------------------------------
+/// Method:      AutonomousInit
+/// Description: This initializes the autonomous state
+///-----------------------------------------------------------------------
+void Robot::AutonomousInit() 
+{
+
 }
 
-void Robot::TeleopInit() {}
 
-void Robot::TeleopPeriodic() {}
+///-----------------------------------------------------------------------
+/// Method:      AutonomousPeriodic
+/// Description: Runs every 20 milliseconds when the autonomous state is 
+///              active.
+///-----------------------------------------------------------------------
+void Robot::AutonomousPeriodic() 
+{
 
-void Robot::TestPeriodic() {}
+}
+
+
+///-----------------------------------------------------------------------
+/// Method:      TeleopInit
+/// Description: This initializes the teleoperated state
+///-----------------------------------------------------------------------
+void Robot::TeleopInit() 
+{
+
+}
+
+
+///-----------------------------------------------------------------------
+/// Method:      TeleopPeriodic
+/// Description: Runs every 20 milliseconds when the teleoperated state is 
+///              active.
+///-----------------------------------------------------------------------
+void Robot::TeleopPeriodic() 
+{
+
+}
+
+
+///-----------------------------------------------------------------------
+/// Method:      TestInit
+/// Description: This initializes the test state
+///-----------------------------------------------------------------------
+void Robot::TestInit() 
+{
+
+}
+
+
+///-----------------------------------------------------------------------
+/// Method:      TestPeriodic
+/// Description: Runs every 20 milliseconds when the test state is 
+///              active.
+///-----------------------------------------------------------------------
+void Robot::TestPeriodic() 
+{
+
+}
 
 #ifndef RUNNING_FRC_TESTS
-int main() { return frc::StartRobot<Robot>(); }
+int main() 
+{
+    return frc::StartRobot<Robot>(); 
+}
 #endif

@@ -27,9 +27,9 @@
 //             motor usage options
 //             ====================================================
 //
-//		enum TALON_TYPE
+//		enum MOTOR_CONTROLLER_TYPE
 //		{
-//			UNKNOWN_TALON_TYPE = -1,
+//			UNKNOWN_MOTOR_CONTROLLER_TYPE = -1,
 //			FRONT_LEFT_DRIVE,
 //			MIDDLE_LEFT_DRIVE,
 //			BACK_LEFT_DRIVE,
@@ -43,7 +43,7 @@
 //			INTAKE,
 //			ELEVATOR_WINCH,
 //			ELEVATOR_DRIVE,
-//			MAX_TALON_TYPES
+//			MAX_MOTOR_CONTROLLER_TYPES
 //		};
 //
 //
@@ -102,7 +102,7 @@ IDragonMotorController* MotorDefn::ParseXML
     // initialize attributes to default values
     int canID = 0;
 	int pdpID = -1;
-    IDragonMotorController::TALON_TYPE     usage = IDragonMotorController::TALON_TYPE::UNKNOWN_TALON_TYPE;
+    IDragonMotorController::MOTOR_CONTROLLER_TYPE     usage = IDragonMotorController::MOTOR_CONTROLLER_TYPE::UNKNOWN_MOTOR_CONTROLLER_TYPE;
     bool inverted = false;
     bool sensorInverted = false;
     ctre::phoenix::motorcontrol::FeedbackDevice  feedbackDevice = ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder;
@@ -111,7 +111,6 @@ IDragonMotorController* MotorDefn::ParseXML
     float gearRatio = 1;
     bool brakeMode = false;
     int slaveTo = -1;
-    int currentLimit = 0;
     int peakCurrentDuration = 0;
     int continuousCurrentLimit = 0;
     int peakCurrentLimit = 0;
@@ -121,13 +120,14 @@ IDragonMotorController* MotorDefn::ParseXML
 
 
     bool hasError = false;
+    IMechanism::MECHANISM_TYPE mechType = IMechanism::MECHANISM_TYPE::UNKNOWN_MECHANISM;
 
     for (pugi::xml_attribute attr = motorNode.first_attribute(); attr; attr = attr.next_attribute())
     {
 		
-		//		enum TALON_TYPE
+		//		enum MOTOR_CONTROLLER_TYPE
 		//		{
-		//			UNKNOWN_TALON_TYPE = -1,
+		//			UNKNOWN_MOTOR_CONTROLLER_TYPE = -1,
 		//			FRONT_LEFT_DRIVE,
 		//			MIDDLE_LEFT_DRIVE,
 		//			BACK_LEFT_DRIVE,
@@ -141,66 +141,66 @@ IDragonMotorController* MotorDefn::ParseXML
 		//			INTAKE,
 		//			ELEVATOR_WINCH,
 		//			ELEVATOR_DRIVE,
-		//			MAX_TALON_TYPES
+		//			MAX_MOTOR_CONTROLLER_TYPES
 		//		};		
         if ( strcmp( attr.name(), "usage" ) == 0 )
         {
             auto usageStr = attr.value();
             if ( strcmp( usageStr, "FRONT_LEFT_DRIVE") == 0 )
             {
-                usage = IDragonMotorController::TALON_TYPE::FRONT_LEFT_DRIVE;
+                usage = IDragonMotorController::MOTOR_CONTROLLER_TYPE::FRONT_LEFT_DRIVE;
             }
             else if ( strcmp( usageStr, "MIDDLE_LEFT_DRIVE") == 0 )
             {
-                usage = IDragonMotorController::TALON_TYPE::MIDDLE_LEFT_DRIVE;
+                usage = IDragonMotorController::MOTOR_CONTROLLER_TYPE::MIDDLE_LEFT_DRIVE;
             }
             else if ( strcmp( usageStr, "BACK_LEFT_DRIVE") == 0 )
             {
-                usage = IDragonMotorController::TALON_TYPE::BACK_LEFT_DRIVE;
+                usage = IDragonMotorController::MOTOR_CONTROLLER_TYPE::BACK_LEFT_DRIVE;
             }            
             else if ( strcmp( usageStr, "FRONT_RIGHT_DRIVE") == 0 )
             {
-                usage = IDragonMotorController::TALON_TYPE::FRONT_RIGHT_DRIVE;
+                usage = IDragonMotorController::MOTOR_CONTROLLER_TYPE::FRONT_RIGHT_DRIVE;
             }
             else if ( strcmp( usageStr, "MIDDLE_RIGHT_DRIVE") == 0 )
             {
-                usage = IDragonMotorController::TALON_TYPE::MIDDLE_RIGHT_DRIVE;
+                usage = IDragonMotorController::MOTOR_CONTROLLER_TYPE::MIDDLE_RIGHT_DRIVE;
             }
             else if ( strcmp( usageStr, "BACK_RIGHT_DRIVE") == 0 )
             {
-                usage = IDragonMotorController::TALON_TYPE::BACK_RIGHT_DRIVE;
+                usage = IDragonMotorController::MOTOR_CONTROLLER_TYPE::BACK_RIGHT_DRIVE;
             }
             else if ( strcmp( usageStr, "ARM_MASTER") == 0 )
             {
-                usage = IDragonMotorController::TALON_TYPE::ARM_MASTER;
+                usage = IDragonMotorController::MOTOR_CONTROLLER_TYPE::ARM_MASTER;
             }            
             else if ( strcmp( usageStr, "ARM_SLAVE") == 0 )
             {
-                usage = IDragonMotorController::TALON_TYPE::ARM_SLAVE;
+                usage = IDragonMotorController::MOTOR_CONTROLLER_TYPE::ARM_SLAVE;
             }
             else if ( strcmp( usageStr, "ARM_EXTENSION") == 0 )
             {
-                usage = IDragonMotorController::TALON_TYPE::ARM_EXTENSION;
+                usage = IDragonMotorController::MOTOR_CONTROLLER_TYPE::ARM_EXTENSION;
             }
             else if ( strcmp( usageStr, "WRIST") == 0 )
             {
-                usage = IDragonMotorController::TALON_TYPE::WRIST;
+                usage = IDragonMotorController::MOTOR_CONTROLLER_TYPE::WRIST;
             }            
 			else if ( strcmp( usageStr, "INTAKE") == 0 )
             {
-                usage = IDragonMotorController::TALON_TYPE::INTAKE;
+                usage = IDragonMotorController::MOTOR_CONTROLLER_TYPE::INTAKE;
             }
             else if ( strcmp( usageStr, "ELEVATOR_WINCH") == 0 )
             {
-                usage = IDragonMotorController::TALON_TYPE::ELEVATOR_WINCH;
+                usage = IDragonMotorController::MOTOR_CONTROLLER_TYPE::ELEVATOR_WINCH;
             }
             else if ( strcmp( usageStr, "ELEVATOR_DRIVE") == 0 )
             {
-                usage = IDragonMotorController::TALON_TYPE::ELEVATOR_DRIVE;
+                usage = IDragonMotorController::MOTOR_CONTROLLER_TYPE::ELEVATOR_DRIVE;
             }
             else if ( strcmp( usageStr, "HATCH_MECH_MOTOR" ) == 0 ) 
             {
-                usage = IDragonMotorController::TALON_TYPE::HATCH_MECH_MOTOR;
+                usage = IDragonMotorController::MOTOR_CONTROLLER_TYPE::HATCH_MECH_MOTOR;
             }
             else
             {
@@ -395,7 +395,8 @@ IDragonMotorController* MotorDefn::ParseXML
     if ( !hasError )
     {
 		pdpID = ( pdpID < 0 ) ? pdpID = canID : pdpID;
-        controller = DragonMotorControllerFactory::GetInstance()->CreateMotorController( mtype,
+        controller = DragonMotorControllerFactory::GetInstance()->CreateMotorController( mechType,
+                                                                                         mtype,
                                                                                          canID,
                                                                                          pdpID,
                                                                                          usage,
@@ -406,7 +407,6 @@ IDragonMotorController* MotorDefn::ParseXML
                                                                                          gearRatio,
                                                                                          brakeMode,
                                                                                          slaveTo,
-                                                                                         currentLimit,
                                                                                          peakCurrentLimit,
                                                                                          peakCurrentDuration,
                                                                                          peakCurrentLimit,

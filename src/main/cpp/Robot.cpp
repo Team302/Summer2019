@@ -67,7 +67,7 @@ void Robot::RobotPeriodic()
 ///-----------------------------------------------------------------------
 void Robot::AutonomousInit() 
 {
-
+    TeleopInit();
 }
 
 
@@ -78,7 +78,7 @@ void Robot::AutonomousInit()
 ///-----------------------------------------------------------------------
 void Robot::AutonomousPeriodic() 
 {
-
+    TeleopPeriodic();
 }
 
 

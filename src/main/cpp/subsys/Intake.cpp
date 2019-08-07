@@ -39,7 +39,7 @@
 /// method:         Intake <<constructor>>
 /// description:    Create the subobjects and initialize the Intake subsystem
 ///==================================================================================
-Intake()
+Intake::Intake()
 {
     // Short-term create the DragonTalon's here
     // (e.g. m_motor = new DragonTalon( pass correct parameters );
@@ -56,7 +56,7 @@ Intake()
 /// method:         ~Intake <<destructor>>
 /// description:    clean up memory when this object gets deleted
 ///==================================================================================
-~Intake()
+Intake::~Intake()
 {
     // delete owned objects (e.g. delete m_motor;)
 }
@@ -66,7 +66,7 @@ Intake()
 /// description:    Indicates this is the intake
 /// returns:        IMechanism::MECHANISM_TYPE::INTAKE
 ///==================================================================================
-IMechanism::MECHANISM_TYPE GetType() const 
+IMechanism::MECHANISM_TYPE Intake::GetType() const 
 {
     return IMechanism::MECHANISM_TYPE::INTAKE;
 }
@@ -77,7 +77,7 @@ IMechanism::MECHANISM_TYPE GetType() const
 /// description:    Run intake in open loop (percent output)
 /// returns:        void
 ///==================================================================================
-void SetPercentOutput
+void Intake::SetPercentOutput
 (
     double      value       /// <I> - percent output for the motor(s)
 ) 
@@ -96,7 +96,7 @@ void SetPercentOutput
 ///                 being counter-clockwise.
 /// returns:        void
 ///==================================================================================
-void SetPosition 
+void Intake::SetPosition 
 (
     double      pos       /// <I> - target position in degrees (rotating mechansim) 
 ) 
@@ -123,7 +123,7 @@ void SetPosition
 ///                 and 90 for counter-clockwise rotations.
 /// returns:        double  position in degrees (rotating mechansim)
 ///==================================================================================
-double GetCurrentPosition() const 
+double Intake::GetCurrentPosition() const 
 {
     // Normally would call GetSelectedSensorPosition, but there is no sensor, so we
     // would call GetMotorOutputPercent.  This isn't currently exposed in our APIs, so 
@@ -139,7 +139,7 @@ double GetCurrentPosition() const
 ///                 and 90 for counter-clockwise rotations.
 /// returns:        double  position in degrees (rotating mechansim)
 ///==================================================================================
-double GetTargetPosition() const 
+double Intake::GetTargetPosition() const 
 {
     // No sensor so it is the same as the current
     return GetCurrentPosition();
@@ -154,7 +154,7 @@ double GetTargetPosition() const
 ///                 rotations and 360 for counter clockwise rotations.
 /// returns:        void
 ///==================================================================================
-void SetSpeed 
+void Intake::SetSpeed 
 (
     double      speed       /// <I> - target speed degrees/second (rotating mechansim)
 ) 
@@ -182,7 +182,7 @@ void SetSpeed
 ///                 counter clockwise rotations.
 /// returns:        double  speed in degrees/second (rotating mechansim)
 ///==================================================================================
-double GetCurrentSpeed() const 
+double Intake::GetCurrentSpeed() const 
 {
     // Normally would call GetSelectedSensorVelocity, but there is no sensor, so we
     // would call GetMotorOutputPercent.  This isn't currently exposed in our APIs, so 
@@ -199,10 +199,13 @@ double GetCurrentSpeed() const
 ///                 counter clockwise rotations.
 /// returns:        double  speed in degrees/second (rotating mechansim)
 ///==================================================================================
-double GetTargetSpeed() const 
+double Intake::GetTargetSpeed() const 
 {
     // No sensor so it is the same as the current
     return GetCurrentPosition();
 }
+
+
+
 
 

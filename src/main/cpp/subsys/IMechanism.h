@@ -114,14 +114,15 @@ class IMechanism
 
 
         ///==================================================================================
-        /// method:         Set
+        /// method:         SetPercentOutput
         /// description:    Run mechanism in open loop (percent output)
         /// returns:        void
         ///==================================================================================
-        virtual void Set
+        virtual void SetPercentOutput
         (
             double      value       /// <I> - percent output for the motor(s)
         ) = 0;
+
 
         ///==================================================================================
         /// method:         SetPosition
@@ -131,21 +132,62 @@ class IMechanism
         ///==================================================================================
         virtual void SetPosition 
         (
-            double      pos       /// <I> - target position (inches or degrees)
+            double      pos       /// <I> - target position in inches (translating mechanisms)  
+				  ///       or degrees (rotating mechanisms) 
         ) = 0;
+
+
+        ///==================================================================================
+        /// method:         GetCurrentPostion
+        /// description:    Return the current position of the mechanism.  The value is in 
+        ///                 inches or degrees.
+        /// returns:        double	position in inches (translating mechanisms) or degrees 
+	///				(rotating mechanisms)
+        ///==================================================================================
+        virtual double GetCurrentPosition() const = 0;
+
+        ///==================================================================================
+        /// method:         GetTargetPostion
+        /// description:    Return the targget position of the mechanism.  The value is in 
+        ///                 inches or degrees.
+        /// returns:        double	position in inches (translating mechanisms) or degrees
+	///				(rotating mechanisms)
+        ///==================================================================================
+        virtual double GetTargetPosition() const = 0;
 
         ///==================================================================================
         /// method:         SetSpeed
         /// description:    Run mechanism in closed loop velocity mode.  The value is in 
-        ///                 inches per second or degrees per second.
+        ///                 inches/second (translating mechanisms) or degrees/second (rotating 
+	///		    mechanisms)
         /// returns:        void
         ///==================================================================================
         virtual void SetSpeed 
         (
-            double      speed       /// <I> - target speed (inches / second or degrees / second)
+            double      speed       /// <I> - target speed inches/second (translating mechanisms) or 
+				    ///	      degrees/second (rotating mechanisms)
         ) = 0;
 
-        // todo:  move
+        ///==================================================================================
+        /// method:         GetCuyrrentSpeed
+        /// description:    Get the current speed of the mechanism.  The value is in 
+        ///                 inches per second or degrees per second.
+        /// returns:        double	speed in inches/second (translating mechanisms) or 
+	///				degrees/second (rotating mechanisms)
+        ///==================================================================================
+        virtual double GetCurrentSpeed() const = 0;
+
+        ///==================================================================================
+        /// method:         GetTargetSpeecd
+        /// description:    Get the target speed of the mechanism.  The value is in 
+        ///                 inches per second or degrees per second.
+        /// returns:        double	speed in inches/second (translating mechanisms) or 
+	///				degrees/second (rotating mechanisms)
+        ///==================================================================================
+        virtual double GetTargetSpeed() const = 0; 
+        
+        // todo:  move functionality
+	/*
         virtual void SetParam
         (
             IMechanism::MECHANISM_PARAM_TYPE    param,          // <I> - parameter to set
@@ -157,10 +199,11 @@ class IMechanism
         (
             PIDData*        pid                 // <I> - PID control information
         ) = 0;
+	*/
 
 
-		IMechanism() = default;
-		virtual ~IMechanism() = default;
+	IMechanism() = default;
+	virtual ~IMechanism() = default;
 };
 typedef std::vector<IMechanism*> IMechanismVector;
 

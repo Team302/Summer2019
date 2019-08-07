@@ -14,8 +14,10 @@
 /// OR OTHER DEALINGS IN THE SOFTWARE.
 ///====================================================================================================================================================
 
+#pragma once
+
 ///========================================================================================================
-/// Intake.cpp
+/// Intake.h
 ///========================================================================================================
 ///
 /// File Description:
@@ -28,181 +30,127 @@
 // FRC includes
 
 // Team 302 includes
+#include <hw/(IDragonMotorController.h>
 #include <subsys/IMechanism.h>
-#include <subsys/Intake.h>
 
 // Third Party Includes
 
 
-
-///==================================================================================
-/// method:         Intake <<constructor>>
-/// description:    Create the subobjects and initialize the Intake subsystem
-///==================================================================================
-Intake()
+///========================================================================================================
+///  Class:         IMechanism
+///  Description:   Interface for subsystems
+///========================================================================================================
+class Intake : public IMechanism
 {
-    // Short-term create the DragonTalon's here
-    // (e.g. m_motor = new DragonTalon( pass correct parameters );
-    // eventually we will get this from the DragonMotorControllerFactory
-    
-    // Then set the default behavior
-    // - set brake mode or coast mode (goes away when xml driven)
-    // - set inverted or not (goes away when xml driven)
-    // - set control mode
-    // - make sure the motor isn't running
-}
+    public:
 
-///==================================================================================
-/// method:         ~Intake <<destructor>>
-/// description:    clean up memory when this object gets deleted
-///==================================================================================
-~Intake()
-{
-    // delete owned objects (e.g. delete m_motor;)
-}
+        ///==================================================================================
+        /// method:         Intake <<constructor>>
+        /// description:    Create the subobjects and initialize the Intake subsystem
+        ///==================================================================================
+        Intake();
 
-///==================================================================================
-/// method:         GetType
-/// description:    Indicates this is the intake
-/// returns:        IMechanism::MECHANISM_TYPE::INTAKE
-///==================================================================================
-IMechanism::MECHANISM_TYPE GetType() const 
-{
-    return IMechanism::MECHANISM_TYPE::INTAKE;
-}
+        ///==================================================================================
+        /// method:         ~Intake <<destructor>>
+        /// description:    clean up memory when this object gets deleted
+        ///==================================================================================
+        virtual ~Intake();
+
+        ///==================================================================================
+        /// method:         GetType
+        /// description:    Indicates this is the intake
+        /// returns:        IMechanism::MECHANISM_TYPE::INTAKE
+        ///==================================================================================
+        IMechanism::MECHANISM_TYPE GetType() const override;
 
 
-///==================================================================================
-/// method:         SetPercentOutput
-/// description:    Run intake in open loop (percent output)
-/// returns:        void
-///==================================================================================
-void SetPercentOutput
-(
-    double      value       /// <I> - percent output for the motor(s)
-) 
-{
-    // Make sure value is in range (-1.0 to 1.0) and then set the percent output
-    // on the motor (2 calls)
-}
+        ///==================================================================================
+        /// method:         SetPercentOutput
+        /// description:    Run intake in open loop (percent output)
+        /// returns:        void
+        ///==================================================================================
+        void SetPercentOutput
+        (
+            double      value       /// <I> - percent output for the motor(s)
+        ) override;
 
 
-///==================================================================================
-/// method:         SetPosition
-/// description:    Run intake in closed loop position mode.  The value is in 
-///                 degrees.  Since we don't have a sensor, this will run percent
-///                 output in the direction specified.  We will use the standard unit
-///                 circle for direction with negative being clockwise and positive
-///                 being counter-clockwise.
-/// returns:        void
-///==================================================================================
-void SetPosition 
-(
-    double      pos       /// <I> - target position in degrees (rotating mechansim) 
-) 
-{
-    // Since there isn't a sensor, just set the motor speeds based on the position
-    // input to either -1.0 or 1.0. Just call the set method with these values.
-    double percent = 0.0;
-    if ( pos < m_deadbandTol )
-    {
-        percent = 1.0;
-    }
-    else if ( pos > m_deadbandTol )
-    {
-        percent = -1.0;
-    }
-    SetPercentOutput( percent );
-}
+        ///==================================================================================
+        /// method:         SetPosition
+        /// description:    Run intake in closed loop position mode.  The value is in 
+        ///                 degrees.  Since we don't have a sensor, this will run percent
+        ///                 output in the direction specified.  We will use the standard unit
+        ///                 circle for direction with negative being clockwise and positive
+        ///                 being counter-clockwise.
+        /// returns:        void
+        ///==================================================================================
+        void SetPosition 
+        (
+            double      pos       /// <I> - target position in degrees (rotating mechansim) 
+        ) override;
 
 
-///==================================================================================
-/// method:         GetCurrentPostion
-/// description:    Return the current position of the intake in degrees.  Since
-///                 we don't have a sensor this will return -90 for clockwise rotations
-///                 and 90 for counter-clockwise rotations.
-/// returns:        double  position in degrees (rotating mechansim)
-///==================================================================================
-double GetCurrentPosition() const 
-{
-    // Normally would call GetSelectedSensorPosition, but there is no sensor, so we
-    // would call GetMotorOutputPercent.  This isn't currently exposed in our APIs, so 
-    // hard code for now 
-    return 90.0;
-}
+        ///==================================================================================
+        /// method:         GetCurrentPostion
+        /// description:    Return the current position of the intake in degrees.  Since
+        ///                 we don't have a sensor this will return -90 for clockwise rotations
+        ///                 and 90 for counter-clockwise rotations.
+        /// returns:        double  position in degrees (rotating mechansim)
+        ///==================================================================================
+        double GetCurrentPosition() const override;
 
 
-///==================================================================================
-/// method:         GetTargetPostion
-/// description:    Return the target position of the intake.  Since
-///                 we don't have a sensor this will return -90 for clockwise rotations
-///                 and 90 for counter-clockwise rotations.
-/// returns:        double  position in degrees (rotating mechansim)
-///==================================================================================
-double GetTargetPosition() const 
-{
-    // No sensor so it is the same as the current
-    return GetCurrentPosition();
-}
+        ///==================================================================================
+        /// method:         GetTargetPostion
+        /// description:    Return the target position of the intake.  Since
+        ///                 we don't have a sensor this will return -90 for clockwise rotations
+        ///                 and 90 for counter-clockwise rotations.
+        /// returns:        double  position in degrees (rotating mechansim)
+        ///==================================================================================
+        double GetTargetPosition() const override;
 
 
-///==================================================================================
-/// method:         SetSpeed
-/// description:    Run intake in closed loop velocity mode.  The value is in 
-///                 degrees/second (rotating mechansim).  Since we don't have a 
-///                 sensor for this mechanism, it will return -360 for clockwise 
-///                 rotations and 360 for counter clockwise rotations.
-/// returns:        void
-///==================================================================================
-void SetSpeed 
-(
-    double      speed       /// <I> - target speed degrees/second (rotating mechansim)
-) 
-{
-    // Since there isn't a sensor, just set the motor speeds based on the position
-    // input to either -1.0 or 1.0. Just call the set method with these values.
-    double percent = 0.0;
-    if ( speed < m_deadbandTol )
-    {
-        percent = 1.0;
-    }
-    else if ( speed > m_deadbandTol )
-    {
-        percent = -1.0;
-    }
-    SetPercentOutput( percent );
-}
+        ///==================================================================================
+        /// method:         SetSpeed
+        /// description:    Run intake in closed loop velocity mode.  The value is in 
+        ///                 degrees/second (rotating mechansim).  Since we don't have a 
+        ///                 sensor for this mechanism, it will return -360 for clockwise 
+        ///                 rotations and 360 for counter clockwise rotations.
+        /// returns:        void
+        ///==================================================================================
+        void SetSpeed 
+        (
+            double      speed       /// <I> - target speed degrees/second (rotating mechansim)
+        ) override;
 
 
-///==================================================================================
-/// method:         GetCurrentSpeed
-/// description:    Get the current speed of the intake.  The value is in degrees 
-///                 per second.  Since we don't have a sensor for this mechanism,
-///                 it will return -360 for clockwise rotations and 360 for 
-///                 counter clockwise rotations.
-/// returns:        double  speed in degrees/second (rotating mechansim)
-///==================================================================================
-double GetCurrentSpeed() const 
-{
-    // Normally would call GetSelectedSensorVelocity, but there is no sensor, so we
-    // would call GetMotorOutputPercent.  This isn't currently exposed in our APIs, so 
-    // hard code for now 
-    return 360.0;
-}
+        ///==================================================================================
+        /// method:         GetCurrentSpeed
+        /// description:    Get the current speed of the intake.  The value is in degrees 
+        ///                 per second.  Since we don't have a sensor for this mechanism,
+        ///                 it will return -360 for clockwise rotations and 360 for 
+        ///                 counter clockwise rotations.
+        /// returns:        double  speed in degrees/second (rotating mechansim)
+        ///==================================================================================
+        double GetCurrentSpeed() const override;
 
 
-///==================================================================================
-/// method:         GetTargetSpeecd
-/// description:    Get the target speed of the intake.  The value is in degrees 
-///                 per second.  Since we don't have a sensor for this mechanism,
-///                 it will return -360 for clockwise rotations and 360 for 
-///                 counter clockwise rotations.
-/// returns:        double  speed in degrees/second (rotating mechansim)
-///==================================================================================
-double GetTargetSpeed() const 
-{
-    // No sensor so it is the same as the current
-    return GetCurrentPosition();
-}
+        ///==================================================================================
+        /// method:         GetTargetSpeecd
+        /// description:    Get the target speed of the intake.  The value is in degrees 
+        ///                 per second.  Since we don't have a sensor for this mechanism,
+        ///                 it will return -360 for clockwise rotations and 360 for 
+        ///                 counter clockwise rotations.
+        /// returns:        double  speed in degrees/second (rotating mechansim)
+        ///==================================================================================
+        double GetTargetSpeed() const override; 
+        
+        
+    Private:
+        (IDragonMotorController*    m_motor;
+        const double                m_deadbandTol = 0.1;
+};
+
+
 
 

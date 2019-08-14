@@ -53,6 +53,7 @@ class IMechanism
             WRIST,
             INTAKE,
             ARM,
+            EXTENDER,
             CLIMBER,
             HATCH_MANIPULATOR,
             MAX_MECHANISM_TYPES

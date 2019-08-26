@@ -20,7 +20,7 @@ class DragonServo
 		{
 			UNKNOWN_SERVO_USAGE = -1,
 			ROTATE_LIMELIGHT,
-			DROP_BUDDY_CLIMB,
+			TAIL_CONTROL,
 			MAX_SERVO_USAGES
 		};
 		DragonServo() = delete;

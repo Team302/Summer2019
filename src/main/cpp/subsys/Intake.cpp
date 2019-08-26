@@ -24,12 +24,16 @@
 ///========================================================================================================
 
 // C++ Includes
+#include <iostream>
 
 // FRC includes
 
 // Team 302 includes
+#include <hw/DragonMotorControllerFactory.h>        
+#include <hw/IDragonMotorController.h>
 #include <subsys/IMechanism.h>
 #include <subsys/Intake.h>
+#include <utils/LimitValue.h>
 
 // Third Party Includes
 
@@ -41,15 +45,17 @@
 ///==================================================================================
 Intake::Intake()
 {
-    // Short-term create the DragonTalon's here
-    // (e.g. m_motor = new DragonTalon( pass correct parameters );
-    // eventually we will get this from the DragonMotorControllerFactory
-    
-    // Then set the default behavior
-    // - set brake mode or coast mode (goes away when xml driven)
-    // - set inverted or not (goes away when xml driven)
-    // - set control mode
-    // - make sure the motor isn't running
+    // Get the motor controller and set its mode to percent output and stop it
+    m_motor = DragonMotorControllerFactory::GetInstance()->GetController( IMechanism::MECHANISM_TYPE::INTAKE, IDragonMotorController::MOTOR_CONTROLLER_TYPE::INTAKE );
+    if ( m_motor != nullptr )
+    {
+        m_motor->SetControlMode( IDragonMotorController::DRAGON_CONTROL_MODE::PERCENT_OUTPUT );
+        m_motor->Set( 0.0 );
+    }
+    else
+    {
+        std::cout << "==>>Intake::Intake motor not found " << std::endl;
+    }
 }
 
 ///==================================================================================
@@ -84,6 +90,12 @@ void Intake::SetPercentOutput
 {
     // Make sure value is in range (-1.0 to 1.0) and then set the percent output
     // on the motor (2 calls)
+    if ( m_motor != nullptr )
+    {
+        auto pct = LimitValue::ForceInRange( value, -1.0, 1.0 );
+        m_motor->SetControlMode( IDragonMotorController::DRAGON_CONTROL_MODE::PERCENT_OUTPUT );
+        m_motor->Set( pct );
+    }
 }
 
 
@@ -161,6 +173,7 @@ void Intake::SetSpeed
 {
     // Since there isn't a sensor, just set the motor speeds based on the position
     // input to either -1.0 or 1.0. Just call the set method with these values.
+    // TODO:: maybe we should run a voltqge control mode instead
     double percent = 0.0;
     if ( speed < m_deadbandTol )
     {

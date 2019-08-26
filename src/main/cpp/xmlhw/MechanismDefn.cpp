@@ -32,7 +32,6 @@
 // C++ Includes
 #include <iostream>
 #include <utility>
-#include <vector>
 
 // FRC includes
 #include <frc/AnalogInput.h>
@@ -47,15 +46,9 @@
 #include <xmlhw/MotorDefn.h>
 #include <xmlhw/ServoDefn.h> 
 
-#include <hw/DragonAnalogInput.h>
-#include <hw/DragonDigitalInput.h>
-#include <hw/DragonServo.h>
-#include <hw/IDragonMotorController.h>
 #include <subsys/IMechanism.h>
 
 #include <xmlhw/MechanismDefn.h>
-#include <xmlhw/MechanismDataDefn.h>
-#include <xmlhw/PIDDefn.h>
 
 // Third Party Includes
 #include <pugixml/pugixml.hpp>
@@ -126,12 +119,16 @@ void MechanismDefn::ParseXML
                     type = IMechanism::CLIMBER;
                     break;
 
-                case IMechanism::HATCH_MANIPULATOR:
-                    type = IMechanism::HATCH_MANIPULATOR;
+                case IMechanism::BEAK:
+                    type = IMechanism::BEAK;
+                    break;
+
+                case IMechanism::TAIL:
+                    type = IMechanism::TAIL;
                     break;
 
                 default:
-                    printf( "==>> MechanismDefn::ParseXML unknown Mechanism type %s \n ", attr.value() );
+                    std::cout << "==>>MechanismDefn::ParseXML unknown Mechanism type " << attr.value() << std::endl;
                     hasError = true;
                     break;
                 
@@ -139,47 +136,29 @@ void MechanismDefn::ParseXML
         }
         else
         {
-            printf( "==>>MechanismDefn::ParseXML invalid attribute %s \n", attr.name() );
+            std::cout << "==>>MechanismDefn::ParseXML invalid attribute " << attr.name() << std::endl;
             hasError = true;
         }
     }
 
-    // initialize the subobjects
-    IDragonMotorControllerVector motors;
-    DragonAnalogInputVector analogIns;
-    DragonDigitalInputVector digitals;
-    DragonServoVector servos;
-
-    mechParameters parameters;
-    std::vector<PIDData*> pidControlVector;
-
-    // Parse/validate subobject xml
+        // Parse/validate subobject xml
     for (pugi::xml_node child = mechanismNode.first_child(); child; child = child.next_sibling())
     {
         if ( strcmp( child.name(), "motor") == 0 )
         {
-            motors.emplace_back( MotorDefn::ParseXML( child ) );
+            MotorDefn::ParseXML( child );
         }
         else if ( strcmp( child.name(), "analogInput") == 0 )
         {
-            analogIns.emplace_back( AnalogInputDefn::ParseXML( child ) );
+            AnalogInputDefn::ParseXML( child );
         }
         else if ( strcmp( child.name(), "digitalInput") == 0 )
         {
-            digitals.emplace_back( DigitalInputDefn::ParseXML( child ) );
+            DigitalInputDefn::ParseXML( child );
         }
         else if ( strcmp( child.name(), "servo") == 0 )
         {
-            servos.emplace_back( ServoDefn::ParseXML( child ) );
-        }
-        else if ( strcmp( child.name(), "mechanismData") == 0 )
-        {
-            // Mechanism Data
-            parameters.emplace_back( MechanismDataDefn::ParseXML( child ) );
-        }
-        else if ( strcmp( child.name(), "PID") == 0 )
-        {
-            pidControlVector.emplace_back( PIDDefn::ParseXML( child ) );
+            ServoDefn::ParseXML( child );
         }
         else
         {
@@ -192,12 +171,6 @@ void MechanismDefn::ParseXML
     if ( !hasError )
     {
         MechanismFactory* factory =  MechanismFactory::GetMechanismFactory();
-        factory->CreateMechanism( type,                     // mechanism type
-                                  motors,                   // dragon talons
-                                  digitals,                 // dragon digital inputs
-                                  analogIns,                // dragon analog inputs
-                                  servos,                   // dragon servos
-                                  parameters,               // mechanism parameters
-                                  pidControlVector );       // pid control information
+        factory->GetIMechanism( type );
     }
 }

@@ -30,7 +30,7 @@
 // FRC includes
 
 // Team 302 includes
-#include <hw/(IDragonMotorController.h>
+#include <hw/IDragonMotorController.h>
 #include <subsys/IMechanism.h>
 
 // Third Party Includes
@@ -146,8 +146,8 @@ class Intake : public IMechanism
         double GetTargetSpeed() const override; 
         
         
-    Private:
-        (IDragonMotorController*    m_motor;
+    private:
+        IDragonMotorController*     m_motor;
         const double                m_deadbandTol = 0.1;
 };
 

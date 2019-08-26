@@ -108,15 +108,15 @@ void RobotDefn::ParseXML()
                 }
                 else
                 {
-                    std::cout << "==>>RobotDefn::ParseXML unknown robot child " << child.name() << "\n";
+                    std::cout << "==>>RobotDefn::ParseXML unknown robot child " << child.name() << std::endl;
                 }
             }
         }
     }
     else
     {
-        std::cout << "XML [" << filename << "] parsed with errors, attr value: [" << doc.child("prototype").attribute("attr").value() << "]\n";
-        std::cout << "Error description: " << result.description() << "\n";
-        std::cout << "Error offset: " << result.offset << " (error at [..." << (filename + result.offset) << "]\n\n";
+        std::cout << "XML [" << filename << "] parsed with errors, attr value: [" << doc.child("prototype").attribute("attr").value() << "]" << std::endl;
+        std::cout << "Error description: " << result.description() << std::endl;
+        std::cout << "Error offset: " << result.offset << " (error at [..." << (filename + result.offset) << "]" << std::endl;
     }
 }

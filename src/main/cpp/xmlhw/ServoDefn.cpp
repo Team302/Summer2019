@@ -43,23 +43,16 @@
     //          minAngle          CDATA "0.0"
     //          maxAngle          CDATA "180.0"
     //>
-    //
-    //
-    // Returns:     DragonServo*        servo (or nullptr if XML is ill-formed
+    // Returns:     void        
     //-----------------------------------------------------------------------
-    DragonServo* ServoDefn::ParseXML
+    void ServoDefn::ParseXML
     (
         pugi::xml_node      ServoNode
     )
     {
-        // initialize output
-        DragonServo* servo = nullptr;
-
         // initialize attributes to default values
         int pwmID = 0;
         DragonServo::SERVO_USAGE usage = DragonServo::UNKNOWN_SERVO_USAGE;
-//        double minAngle = Servo::GetMinAngle();
-//        double maxAngle = Servo::GetMaxAngle();
         double minAngle = 0.0;
         double maxAngle = 360.0;
 
@@ -77,8 +70,8 @@
                         usage = DragonServo::ROTATE_LIMELIGHT;
                         break;
 
-                    case DragonServo::DROP_BUDDY_CLIMB:
-                        usage = DragonServo::DROP_BUDDY_CLIMB;
+                    case DragonServo::TAIL_CONTROL:
+                        usage = DragonServo::TAIL_CONTROL;
                         break;
 
                     default:
@@ -109,7 +102,6 @@
         // create the object
         if ( !hasError )
         {
-            servo = DragonServoFactory::GetInstance()->CreateDragonServo( usage, pwmID, minAngle, maxAngle );
+            DragonServoFactory::GetInstance()->CreateDragonServo( usage, pwmID, minAngle, maxAngle );
         }
-        return servo;
     }

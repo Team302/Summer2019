@@ -9,7 +9,7 @@
 
 
 //====================================================================================================================================================
-// Copyright 2018 Lake Orion Robobitcs FIRST Team 302
+// Copyright 2010 Lake Orion Robobitcs FIRST Team 302
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 // to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -46,7 +46,6 @@ class DragonServoFactory
             double                      maxAngle            // <I> - Maximum desired angle
         );
 
-
         //=======================================================================================
         // Method:          GetDragonServo
         // Description:     return DragonServo for a particular usage
@@ -60,11 +59,12 @@ class DragonServoFactory
 
     private:
         DragonServoFactory();
-        ~DragonServoFactory() = default;
+        ~DragonServoFactory();
 
 
         static DragonServoFactory*        m_instance;
-        DragonServo*                      m_servo[10];
+        DragonServo*                      m_limelight;
+        DragonServo*                      m_tail;
 
 
 };

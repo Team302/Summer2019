@@ -50,12 +50,14 @@ class IMechanism
         enum MECHANISM_TYPE
         {
             UNKNOWN_MECHANISM = -1,
+            CHASSIS,
             WRIST,
             INTAKE,
             ARM,
             EXTENDER,
             CLIMBER,
-            HATCH_MANIPULATOR,
+            BEAK,
+            TAIL,
             MAX_MECHANISM_TYPES
         };
 

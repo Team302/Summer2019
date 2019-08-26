@@ -87,40 +87,8 @@ DragonDigitalInput* DigitalInputDefn::ParseXML
             int iVal = attr.as_int();
             switch (iVal )
             {
-                case DragonDigitalInput::DIGITAL_INPUT_TYPE::CARGO_PRESENT:
-                    usage = DragonDigitalInput::DIGITAL_INPUT_TYPE::CARGO_PRESENT;
-                    break;
-
-                case DragonDigitalInput::DIGITAL_INPUT_TYPE::HATCH_PRESENT_SIDE1:
-                    usage = DragonDigitalInput::DIGITAL_INPUT_TYPE::HATCH_PRESENT_SIDE1;
-                    break;
-
-                case DragonDigitalInput::DIGITAL_INPUT_TYPE::HATCH_PRESENT_SIDE2:
-                    usage = DragonDigitalInput::DIGITAL_INPUT_TYPE::HATCH_PRESENT_SIDE2;
-                    break;
-
                 case DragonDigitalInput::DIGITAL_INPUT_TYPE::ARM_MIN_POSITION:
                     usage = DragonDigitalInput::DIGITAL_INPUT_TYPE::ARM_MIN_POSITION;
-                    break;
-
-                case DragonDigitalInput::DIGITAL_INPUT_TYPE::ARM_MAX_POSITION:
-                    usage = DragonDigitalInput::DIGITAL_INPUT_TYPE::ARM_MAX_POSITION;
-                    break;
-
-                case DragonDigitalInput::DIGITAL_INPUT_TYPE::FRONT_LEFT_LINE_DETECT:
-                    usage = DragonDigitalInput::DIGITAL_INPUT_TYPE::FRONT_LEFT_LINE_DETECT;
-                    break;
-
-                case DragonDigitalInput::DIGITAL_INPUT_TYPE::FRONT_RIGHT_LINE_DETECT:
-                    usage = DragonDigitalInput::DIGITAL_INPUT_TYPE::FRONT_RIGHT_LINE_DETECT;
-                    break;
-
-                case DragonDigitalInput::DIGITAL_INPUT_TYPE::BACK_LEFT_LINE_DETECT:
-                    usage = DragonDigitalInput::DIGITAL_INPUT_TYPE::BACK_LEFT_LINE_DETECT;
-                    break;
-
-                case DragonDigitalInput::DIGITAL_INPUT_TYPE::BACK_RIGHT_LINE_DETECT:
-                    usage = DragonDigitalInput::DIGITAL_INPUT_TYPE::BACK_RIGHT_LINE_DETECT;
                     break;
 
                 default:

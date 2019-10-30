@@ -25,9 +25,9 @@ class ServoDefn
         // Method:      ParseXML
         // Description: Parse a servo XML element and create a DragonServo from
         //              its definition.
-        // Returns:     DragonServo*        servo (or nullptr if XML is ill-formed
+        // Returns:     void
         //-----------------------------------------------------------------------
-        static DragonServo* ParseXML
+        static void ParseXML
         (
             pugi::xml_node      ServoNode
         );

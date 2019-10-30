@@ -2,7 +2,7 @@
 
 #include "frc/smartdashboard/SmartDashboard.h"
 
-DragonSparkMax::DragonSparkMax(int id, IDragonMotorController::TALON_TYPE deviceType, CANSparkMax::MotorType motorType, double gearRatio) :
+DragonSparkMax::DragonSparkMax(int id, IDragonMotorController::MOTOR_CONTROLLER_TYPE deviceType, CANSparkMax::MotorType motorType, double gearRatio) :
     m_id(id),
     m_spark(new CANSparkMax(id, motorType)),
     m_controlMode(DRAGON_CONTROL_MODE::PERCENT_OUTPUT),
@@ -34,7 +34,7 @@ double DragonSparkMax::GetRPS() const
     return m_spark->GetEncoder().GetVelocity() / 60.0;
 }
 
-IDragonMotorController::TALON_TYPE DragonSparkMax::GetType() const
+IDragonMotorController::MOTOR_CONTROLLER_TYPE DragonSparkMax::GetType() const
 {
     return m_deviceType;
 }

@@ -51,14 +51,14 @@ class DragonTalon : public IDragonMotorController
 
     // Constructors
     DragonTalon() = delete;
-    DragonTalon(IDragonMotorController::TALON_TYPE deviceType, int deviceID, int countsPerRev, double gearRatio);
+    DragonTalon(IDragonMotorController::MOTOR_CONTROLLER_TYPE deviceType, int deviceID, int countsPerRev, double gearRatio);
     virtual ~DragonTalon() = default;
 
 
     // Getters (override)
     double GetRotations() const override;
     double GetRPS() const override;
-    IDragonMotorController::TALON_TYPE GetType() const override;
+    IDragonMotorController::MOTOR_CONTROLLER_TYPE GetType() const override;
     int GetID() const override;
 
     // Setters (override)
@@ -99,7 +99,7 @@ class DragonTalon : public IDragonMotorController
   private:
     TalonSRX *m_talon;
     TALON_CONTROL_MODE m_controlMode;
-    IDragonMotorController::TALON_TYPE m_type;
+    IDragonMotorController::MOTOR_CONTROLLER_TYPE m_type;
 
     int m_id;
     int m_countsPerRev;

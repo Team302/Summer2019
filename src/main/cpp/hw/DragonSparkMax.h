@@ -20,14 +20,14 @@ public:
     //note: two PIDs: 0 is position, 1 is velocity
     // Constructors
     DragonSparkMax() = delete;
-    DragonSparkMax(int id, IDragonMotorController::TALON_TYPE deviceType, CANSparkMax::MotorType motorType, double gearRatio);
+    DragonSparkMax(int id, IDragonMotorController::MOTOR_CONTROLLER_TYPE deviceType, CANSparkMax::MotorType motorType, double gearRatio);
 
     virtual ~DragonSparkMax() = default;
 
     // Getters
     double GetRotations() const override;
     double GetRPS() const override;
-    IDragonMotorController::TALON_TYPE GetType() const override;
+    IDragonMotorController::MOTOR_CONTROLLER_TYPE GetType() const override;
     int GetID() const override;
 
     // Setters
@@ -51,7 +51,7 @@ private:
     DRAGON_CONTROL_MODE m_controlMode;
     double m_outputRotationOffset;
     double m_gearRatio;
-    IDragonMotorController::TALON_TYPE m_deviceType;
+    IDragonMotorController::MOTOR_CONTROLLER_TYPE m_deviceType;
 
     CANSparkMax* GetSparkMax();
     

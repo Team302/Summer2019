@@ -43,9 +43,21 @@ DragonServoFactory* DragonServoFactory::GetInstance()
 
 DragonServoFactory::DragonServoFactory()
 {
-    for ( auto inx=0; inx<DragonServo::SERVO_USAGE::MAX_SERVO_USAGES; ++inx )
+    m_limelight = nullptr;
+    m_tail = nullptr;
+}
+
+DragonServoFactory::~DragonServoFactory()
+{
+    if ( m_limelight != nullptr )
     {
-        m_servo[inx] = nullptr;
+        delete m_limelight;
+        m_limelight = nullptr;
+    }
+    if ( m_tail != nullptr )
+    {
+        delete m_tail;
+        m_tail = nullptr;
     }
 }
 
@@ -65,8 +77,21 @@ DragonServo* DragonServoFactory::CreateDragonServo
     DragonServo* servo = nullptr;
     if ( deviceUsage > DragonServo::SERVO_USAGE::UNKNOWN_SERVO_USAGE && deviceUsage < DragonServo::SERVO_USAGE::MAX_SERVO_USAGES )
     {
-        servo = new DragonServo( deviceUsage, deviceID, minAngle, maxAngle );
-        m_servo[(int) deviceUsage] = servo;
+        switch ( deviceUsage )
+        {
+            case DragonServo::SERVO_USAGE::ROTATE_LIMELIGHT:
+                servo = new DragonServo( deviceUsage, deviceID, minAngle, maxAngle );
+                m_limelight = servo;
+                break;
+
+            case DragonServo::SERVO_USAGE::TAIL_CONTROL:
+                servo = new DragonServo( deviceUsage, deviceID, minAngle, maxAngle );
+                m_tail = servo;
+                break;
+
+            default:
+                break;
+        }
     }
     return servo;
 }
@@ -86,7 +111,19 @@ DragonServo* DragonServoFactory::GetDragonServo
     DragonServo* servo = nullptr;
     if ( deviceUsage > DragonServo::SERVO_USAGE::UNKNOWN_SERVO_USAGE && deviceUsage < DragonServo::SERVO_USAGE::MAX_SERVO_USAGES )
     {
-        servo = m_servo[ (int) deviceUsage ];
+        switch ( deviceUsage )
+        {
+            case DragonServo::SERVO_USAGE::ROTATE_LIMELIGHT:
+                servo = m_limelight;
+                break;
+
+            case DragonServo::SERVO_USAGE::TAIL_CONTROL:
+                servo = m_tail;
+                break;
+
+            default:
+                break;
+        }
     }
     return servo;
 }

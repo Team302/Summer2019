@@ -193,9 +193,9 @@
 <!-- ====================================================
 	 motor usage options 
 	 ====================================================
-    enum TALON_TYPE
+    enum MOTOR_CONTROLLER_TYPE
     {
-        UNKNOWN_TALON_TYPE = -1,
+        UNKNOWN_MOTOR_CONTROLLER_TYPE = -1,
         FRONT_LEFT_DRIVE,
         MIDDLE_LEFT_DRIVE,
         BACK_LEFT_DRIVE,
@@ -209,7 +209,7 @@
         INTAKE,
         ELEVATOR_WINCH,
         ELEVATOR_DRIVE,
-        MAX_TALON_TYPES
+        MAX_MOTOR_CONTROLLER_TYPES
     };
 
 		

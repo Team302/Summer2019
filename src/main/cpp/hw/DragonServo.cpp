@@ -16,11 +16,23 @@ DragonServo::DragonServo
 	double						maxAngle			// <I> - Maximum desired angle
 
 ) : m_usage( deviceUsage ),
-    m_servo( new Servo( deviceID ) ),
+    m_servo(),
 	m_minAngle( minAngle ),
 	m_maxAngle( maxAngle )
 {
-    m_servo =new Servo(deviceID);
+    switch ( deviceUsage )
+    {
+        case DragonServo::SERVO_USAGE::ROTATE_LIMELIGHT:
+            m_servo =new Servo(deviceID);
+            break;
+
+        case DragonServo::SERVO_USAGE::TAIL_CONTROL:
+            m_servo = new Servo(deviceID);
+            break;
+
+        default:
+         break;
+    }
 }
 
 
